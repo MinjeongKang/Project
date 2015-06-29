@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="member" namespace="/member" extends="struts-default">
+		<action name="loginAction" class="bustago.action.loginAction">
+			<result name="success" type="dispatcher">/index.jsp</result>
+			<result name="fail">/guide/login.jsp</result>
+		</action>
+
+		<action name="MemberInsertAction" class="bustago.action.MemberInsertAction">
+			<result name="success" type="dispatcher">/index.jsp</result>
+		</action>
+
+		<action name="IdCheckAction" class="bustago.action.IdCheckAction">
+			<result name="success" type="dispatcher">/guide/member-check.jsp</result>
+			<result name="fail">/guide/member-idcheck.jsp</result>
+		</action>
+
+		<action name="passCheckAction" class="bustago.action.passCheckAction">
+			<result name="success" type="dispatcher">/guide/member-check.jsp</result>
+			<result name="fail">/guide/member-pwcheck.jsp</result>
+		</action>
+		
+		<action name="mypageAction" class="bustago.action.mypageAction">
+			<result name="success" type="dispatcher">/guide/mypage.jsp</result>
+			<result name="fail">/guide/login.jsp</result>
+		</action>
+	</package>
+</struts>

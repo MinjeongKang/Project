@@ -1,0 +1,16 @@
+/*checkbox*/
+#seatDiv td { position:relative; margin:0 0 8px 0; }
+#seatDiv td label { color:#aa9699; }
+
+#seatDiv td>input[type="checkbox"] { position:relative; top:-1px; vertical-align:middle; width:25px; height:30px; }
+
+#seatDiv td:not(#cssbrowser)>input[type="checkbox"] { position:absolute; left:0; top:0; width:25px; height:30px; margin:0; opacity:0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; }
+#seatDiv td:not(#cssbrowser)>input[type="checkbox"] + label{
+	margin:0 0 0 0; padding:5px 0 0px 28px; display:inline-block; background:url(/images/ticket/seat_default2.gif) no-repeat 0 0;
+	width:60%; height:25px; display:block; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; opaque
+}
+
+#seatDiv td:not(#cssbrowser)>input[type="checkbox"]:disabled + label { background:url(/images/ticket/seat_disable2.gif) no-repeat 0 0; color:#ccc;}
+#seatDiv td:not(#cssbrowser)>input[type="checkbox"]:checked + label { background:url(/images/ticket/seat_selected2.gif) no-repeat 0 0;}
+/* #seatDiv td>input[type="checkbox"] + label .checked { background:url(/images/ticket/seat_selected2.gif) no-repeat 0 0;} */
+/* .bus2 td:not(#cssbrowser)>input[type="checkbox"]:checked:disabled + label { background-position:left -75px; } */

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="bustago">
+	<typeAlias alias="member" type="bustago.bean.BoardBean" />
+	<typeAlias alias="buscom" type="bustago.bean.BusComBean" />
+	<typeAlias alias="lostbean" type="bustago.bean.LostBean" />
+	<typeAlias alias="model" type="bustago.bean.questionBean" />
+	<typeAlias alias="memberbean" type="bustago.bean.AdminMemberBean" />
+	<typeAlias alias="busInfo" type="bustago.bean.BusSearchBean" />
+<typeAlias alias="seatBus" type="bustago.bean.SeatBean" />
+	<typeAlias alias="card" type="bustago.bean.cardBean" />
+	<typeAlias alias="admincheck" type="bustago.bean.AdminCkBean" />
+
+	<select id="SelectseatBus" resultClass="seatBus" parameterClass="java.util.HashMap" >
+		SELECT * FROM SEAT41 
+	</select>
+	
+
+	<insert id="insertCard" parameterClass="card">
+		INSERT INTO PAY
+		VALUES(#y_id#,#c_type#,#c_name#,#c_no#,#c_age#,#totalcost#)
+	</insert>
+
+
+	<insert id="yeData" parameterClass="java.util.HashMap">
+
+		INSERT INTO YEDATA VALUES(#y_id#,'MJ',#avaseat#,#adultCount#,#childCount#,#bus_no#,#totalcost#, 'N')
+	</insert> 
+	
+
+	
+	
+	
+	<select id="searchBus" resultClass="busInfo" parameterClass="java.util.HashMap">
+	
+		SELECT *
+		FROM BUS_INFO
+		WHERE B_NO BETWEEN #bus_no# AND SUBSTR(#bus_no#, 1,10)||'2400'
+
+	</select>
+	
+	
+	
+
+	<select id="adminQuestionList" resultClass="model">
+		SELECT *FROM QUESTION
+	</select>
+
+
+	<select id="adminckList" resultClass="admincheck">
+		SELECT *FROM YEDATA Y,(SELECT *FROM PAY)P
+		WHERE Y.Y_NO = P.Y_NO
+	</select>
+
+
+
+
+
+	<select id="adminNoticeList" resultClass="member">
+		SELECT *FROM NOTICE
+	</select>
+
+
+	<insert id="insertData" parameterClass="model">
+		INSERT INTO question
+		VALUES(#q_type#, #q_title#,#q_contents#, SYSDATE,#q_email#, #q_name#)
+	</insert>
+
+
+	<select id="adminMemberList" resultClass="memberbean">
+		SELECT M_ID, M_PW,
+		M_NAME, M_SEX, M_JUMIN, M_CP, M_ADDR, M_EMAIL, M_GRADE
+		FROM MEMBER1
+	</select>
+
+
+	<select id="selectNotice" resultClass="member" parameterClass="java.util.HashMap">
+		SELECT N_NO,N_TITLE,N_CONTENTS,N_HIT,REGDATE
+		FROM(
+		SELECT ROWNUM
+		RM,N_NO,N_TITLE,N_CONTENTS,N_HIT,REGDATE
+		FROM(
+		SELECT
+		N_NO,N_TITLE,N_CONTENTS,N_HIT,
+		TO_CHAR(REGDATE,'YYYY/MM/DD')REGDATE
+		FROM NOTICE
+		ORDER BY N_NO DESC))
+		WHERE RM BETWEEN #start# AND #end#
+	</select>
+	<select id="getTotalRow" resultClass="Integer">
+		SELECT COUNT(*) FROM NOTICE
+	</select>
+	<select id="gettotalRow" resultClass="Integer">
+		SELECT COUNT(*) FROM BUSCOM
+	</select>
+	<select id="getlostTotalRow" resultClass="Integer">
+		SELECT COUNT(*) FROM
+		LOSTPR
+	</select>
+	<select id="getTotalrow" resultClass="Integer"> <!-- 검색토탈 -->
+		SELECT COUNT(*) FROM NOTICE
+		WHERE #search# LIKE %#data#%
+	</select>
+	<select parameterClass="java.util.HashMap" resultClass="buscom"
+		id="selectBusComList">
+		SELECT BC_NO,C_NAME,C_TEL,C_ADDR
+		FROM BUSCOM
+		WHERE BC_NO BETWEEN
+		#start# AND#end#
+	</select>
+	<select id="selectNoticeBoard" resultClass="member"
+		parameterClass="java.util.HashMap">
+		SELECT N_NO,N_TITLE,N_CONTENTS,N_CATEGORY,N_HIT,REGDATE
+		FROM(
+		SELECT
+		ROWNUM RM,N_NO,N_TITLE,N_CONTENTS,N_CATEGORY,N_HIT,REGDATE
+		FROM(
+		SELECT
+		N_NO,N_TITLE,N_CONTENTS,N_CATEGORY,N_HIT,
+		TO_CHAR(REGDATE,'YYYY/MM/DD')REGDATE
+		FROM NOTICE))
+		WHERE
+		N_CATEGORY=#category#
+		<!-- <dynamic prepend="AND"> <isNotEmpty property="category"> N_CATEGORY=#category# 
+			</isNotEmpty> </dynamic> -->
+		ORDER BY RM DESC
+	</select>
+
+	<select parameterClass="java.util.HashMap" resultClass="lostbean"
+		id="selectLostList">
+		SELECT RM,l_no, l_title, l_name, l_regdate, l_hit, l_fileFileName
+		FROM(
+		SELECT ROWNUM RM,l_no, l_title, l_name, l_regdate, l_hit,
+		l_fileFileName
+		FROM(
+		SELECT l_no, l_title, l_name, l_regdate, l_hit,
+		l_fileFileName
+		FROM
+		LOSTPR
+		ORDER BY l_no DESC))
+		WHERE L_NO BETWEEN #start#
+		AND #end#
+	</select>
+
+	<!-- insertLostData -->
+	<insert id="insertLostData" parameterClass="lostbean">
+		INSERT INTO LOSTPR
+		VALUES(lostpr_seq.NEXTVAL, #l_name#, #l_title#, #l_pw#, #l_email#,
+		#l_contents#, 0, SYSDATE, #l_fileFileName#)
+	</insert>
+
+
+	<update id="lostSaveModifyUpdate" parameterClass="lostbean">
+		UPDATE LOSTPR
+		SET L_NAME = #l_name#, L_TITLE = #l_title#, L_PW =
+		#l_pw#, L_EMAIL =
+		#l_email#,
+		L_CONTENTS = #l_contents#, L_FILEFILENAME = #l_fileFileName#
+		WHERE L_NO = #l_no#
+
+	</update>
+
+
+
+	<select id="selectLostInfoView" resultClass="lostbean"
+		parameterClass="java.util.HashMap">
+		SELECT l_no, l_title, l_email, l_name, l_pw,
+		l_contents, l_fileFileName, l_regdate, l_hit
+		FROM LOSTPR
+		WHERE l_no =
+		#l_no#
+	</select>
+
+
+	<select id="lostLoginCheck" resultClass="java.lang.String"
+		parameterClass="java.util.HashMap">
+		SELECT l_pw FROM LOSTPR
+		WHERE l_no=#l_no# AND l_pw
+		=#l_pw#
+	</select>
+
+	<delete id="lostDelete">
+		DELETE FROM LOSTPR WHERE L_NO =#l_no#
+	</delete>
+	
+		<delete id="deleteYedata">
+		DELETE YEDATA WHERE Y_NO=#y_no#
+	</delete>
+	
+	<delete id="deleteYedataPay">
+		DELETE PAY WHERE Y_NO=#y_no#
+	</delete>
+
+	<select id="selectSeatNo" resultClass="java.lang.String" parameterClass="java.util.HashMap">
+	SELECT Y_SIT FROM YEDATA
+	WHERE Y_NO IN (#y_no#)
+	</select>
+
+
+
+
+	<select id="searchBusCom" resultClass="buscom" parameterClass="java.util.HashMap">
+		SELECT BC_NO ,C_NAME ,C_TEL ,C_ADDR
+		FROM BUSCOM
+		WHERE $seOptionData$ LIKE '%'||#selectText#||'%'
+
+	</select>
+
+
+
+
+	<select id="searchNotice" resultClass="member" parameterClass="java.util.HashMap">
+		SELECT N_NO, N_TITLE, N_CONTENTS, N_HIT, REGDATE, N_CATEGORY
+		FROM NOTICE
+		WHERE $seOptionData$ LIKE '%'||#selectText#||'%'
+
+	</select>
+
+
+	<!-- 예매한 버스 조회 -->
+	<select id="yeBusSearch" resultClass="busInfo" parameterClass="java.util.HashMap">
+	SELECT *FROM BUS_INFO
+	WHERE B_NO IN (SELECT B_NO FROM PAY A,YEDATA B
+	WHERE C_NO=#bnumber# AND A.Y_NO = B.Y_NO)
+	</select>
+
+	<!-- 예매정보 카드 정보 조회 -->
+	<select id="yedataSerch" resultClass="admincheck" parameterClass="java.util.HashMap">
+	SELECT * FROM PAY A,YEDATA B
+	WHERE C_NO IN (#bnumber#)
+	AND A.Y_NO = B.Y_NO
+	</select>
+
+
+
+	<update id="updateHit">
+		UPDATE LOSTPR SET L_HIT = L_HIT+1
+		WHERE L_NO=#l_no#
+	</update>
+	
+	
+
+	<update id="seatCnt" parameterClass="Integer">
+		UPDATE bus_info SET count_sit=count_sit + #y_sitCnt#
+		WHERE b_no = SUBSTR(#y_no#, 1,14)
+	</update>
+	
+	
+	<update id="updateCNT" parameterClass="java.util.HashMap">
+	UPDATE BUS_INFO SET COUNT_SIT= COUNT_SIT-#cnt#
+	WHERE B_NO = #bus_no#
+	</update>
+	
+	
+	
+	
+	<update id="ckFlag">
+		UPDATE YEDATA SET YEYAK_CK = 'Y'
+		WHERE Y_NO = #y_no#
+	</update>
+
+	<update id="seatCK" parameterClass="java.util.HashMap">
+		UPDATE SEAT41 SET FLAG='N', Y_NO=#y_id#, B_NO=#bus_no# 
+		WHERE SEAT=#seat# 
+	</update>
+	
+	<update id="seatUNCK" parameterClass="java.util.HashMap">
+		UPDATE SEAT41 SET FLAG='Y', Y_NO=null, B_NO=null 
+		WHERE SEAT=#seat# 
+	</update>
+
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+
+
+

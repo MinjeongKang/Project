@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="member">
+	<typeAlias alias="mb" type="bustago.bean.MemberBean" />
+	
+	<select id="loginCheck" parameterClass="java.util.HashMap" resultClass="java.lang.String">
+		SELECT M_PW FROM MEMBER1
+		WHERE M_ID = #M_ID#
+	</select>
+
+	<select id="idCheck" parameterClass="java.util.HashMap" resultClass="java.lang.String">
+		SELECT M_EMAIL FROM MEMBER1
+		WHERE M_NAME = #M_NAME#
+	</select>
+
+	<select id="passCheck" parameterClass="java.util.HashMap" resultClass="java.lang.String">
+		SELECT M_ID, M_NAME, M_EMAIL FROM MEMBER1
+		WHERE M_ID = #M_ID#
+	</select>
+
+	<select id="selectCheck" parameterClass="java.lang.String" resultClass="mb">
+		SELECT M_ID, M_PW, M_NAME, M_SEX, M_JUMIN, M_CP, M_ADDR, M_EMAIL, M_GRADE, M_DATE
+		FROM MEMBER1
+		WHERE M_NAME = #VALUE#
+	</select>
+
+	<select id="selectCheck2" parameterClass="java.lang.String" resultClass="mb">
+		SELECT M_ID, M_PW, M_NAME, M_SEX, M_JUMIN, M_CP, M_ADDR, M_EMAIL, M_GRADE, M_DATE
+		FROM MEMBER1
+		WHERE M_ID = #VALUE#
+	</select>
+
+	<select id="overlapCheck" resultClass="java.lang.String">
+		SELECT M_ID FROM MEMBER1
+		WHERE M_ID = #id#
+	</select>
+
+	<insert id="insertMember" parameterClass="mb">
+		INSERT INTO MEMBER1
+		VALUES(
+		#M_ID#, #M_PW#, #M_NAME#, #M_SEX#, #M_JUMIN#, #M_CP#, #M_ADDR#,
+		#M_EMAIL#, #M_GRADE#, SYSDATE
+		)
+	</insert>
+
+	<select id="DisplayName" parameterClass="java.lang.String" resultClass="mb">
+		SELECT M_NAME FROM MEMBER1 WHERE M_ID = #M_ID#
+	</select>
+</sqlMap>

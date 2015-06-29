@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="data" namespace="/bustagoApp" extends="struts-default">
+		<action name="lostListAction" class="bustago.action.lostListAction">
+			<result name="success" type="dispatcher">/guide/lostGesi.jsp</result>
+		</action>
+		
+ 		<!-- 결제 FALG-->
+		<action name="ckFlagAction" class="bustago.action.CkFlagAction">
+			<result name="success" type="redirectAction">
+				<param name="actionName">AdminCKList</param>
+			</result>
+		</action> 
+
+		<!-- 예매 취소 -->
+		<action name="YedataDeleteAction" class="bustago.action.YedataDeleteAction">
+			<result name="success" type="dispatcher">/guide/deleteCom.jsp</result>
+			</action> 
+
+
+ 		<!-- 예매 조회-->
+		<action name="yedataSearchAction" class="bustago.action.yedataSearchAction">
+			<result name="success" type="dispatcher">/guide/reservelist.jsp</result>
+			</action> 
+
+		
+		<!-- 결제 관리 페이지-->
+		<action name="AdminCKList" class="bustago.action.AdminCKList">
+			<result name="success" type="dispatcher">/guide/adminCK.jsp</result>
+		</action>
+		
+		<!-- 회원관리 -->
+		<action name="AdminMemberAction" class="bustago.action.AdminMemberAction">
+			<result name="success" type="dispatcher">/guide/adminMember.jsp</result>
+		</action>
+
+		<!-- 카드 정보 -->
+		<action name="searchDataAction" class="bustago.action.cardAction">
+			<result name="success" type="dispatcher">/guide/payCheck.jsp</result>
+		</action>
+		
+		<!-- 버스회차 정보 조회 -->
+		<action name="ticketListAction" class="bustago.action.ticketListAction">
+			<result name="success" type="dispatcher">/guide/ticket.jsp</result>
+		</action>
+		
+		<!-- 버스예약 정보 -->
+		<action name="yeDataAction" class="bustago.action.yeDataAction">
+			<result name="success" type="dispatcher">/cardTest.jsp</result>
+		</action>
+
+		
+
+		<!-- 공지사항 문의 관리 -->
+		<action name="AdminNoticeAction" class="bustago.action.AdminNoticeAction">
+			<result name="success" type="dispatcher">/guide/adminNotice.jsp</result>
+		</action>
+
+		<!-- 1대1 문의 관리 -->
+		<action name="AdminQuestionAction" class="bustago.action.AdminQuestionAction">
+			<result name="success" type="dispatcher">/guide/adminQuestion.jsp</result>
+		</action>
+
+		<action name="noticeAction" class="bustago.action.ListAction">
+			<result name="success" type="dispatcher">/guide/notice.jsp</result>
+		</action>
+		<action name="comListAction" class="bustago.action.comListAction">
+			<result name="success" type="dispatcher">/guide/transportation.jsp </result>
+		</action>
+		<action name="Noticelist" class="bustago.action.noticeList">
+			<result name="success">/guide/notice.jsp</result>
+		</action>
+		
+		<action name="searchJob" class="bustago.action.NoticeListAction">
+			<result name="success" type="dispatcher">/guide/noticeResult.jsp</result>
+		</action>
+		
+		<action name="NoticeSearchAction" class="bustago.action.NoticeSearchAction">
+			<result name="success" type="dispatcher">/guide/notice.jsp</result>
+		</action>
+		
+		<action name="insertLostAction" class="bustago.action.insertLostAction">
+			<interceptor-ref name="prepare" />
+			<interceptor-ref name="modelDriven" />
+			<interceptor-ref name="fileUpload" />
+			<interceptor-ref name="params" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">lostListAction</param>
+			</result>
+		</action>
+		
+		<action name="questionAction" class="bustago.action.questionAction">
+			<result name="success" type="dispatcher">/guide/questionCom.jsp</result>
+		</action>
+		
+		<action name="lostInfoViewAction" class="bustago.action.lostInfoViewAction">
+			<result name="success" type="dispatcher">/guide/lostInfoView.jsp</result>
+		</action>
+
+		<!-- 비밀번호 확인 -->
+		<action name="lostLoginCheckAction" class="bustago.action.lostLoginCheckAction">
+			<result name="delete" type="redirectAction">
+				<param name="actionName">lostDeledteAction</param>
+			</result>
+			<result name="modify" type="redirectAction">
+				<param name="actionName">lostModifyAction</param>
+				<!-- /guide/lostLoginCheck.jsp -->
+			</result>
+			<result name="fail" type="dispatcher">/guide/lostLoginCheck.jsp</result>
+		</action>
+		
+		<action name="lostModifyAction" class="bustago.action.lostModifyAction">
+			<result name="success" type="dispatcher">/guide/lostModify.jsp</result>
+		</action>
+		
+		<!-- 삭제 -->
+		<action name="lostDeledteAction" class="bustago.action.lostDeledteAction">
+			<result name="success" type="redirectAction">
+				<param name="actionName">lostListAction</param>
+			</result>
+		</action>
+		
+		<action name="lostSaveModifyAction" class="bustago.action.lostSaveModifyAction">
+			<result name="success" type="redirectAction">
+				<param name="actionName">lostListAction</param>
+
+			</result>
+		</action>
+		
+		<action name="a" class="bustago.action.a">
+			<result>/seat.jsp</result>
+		</action>
+		<action name="b" class="bustago.action.b">
+			<result>/seat.jsp</result>
+		</action>
+		<action name="seatAction" class="bustago.action.seatAction">
+			<result>/seat.jsp</result>
+		</action>
+	</package>
+</struts>
